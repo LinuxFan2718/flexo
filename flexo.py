@@ -8,21 +8,25 @@ log = open(logfile, "x")
 
 for line in fileinput.input():
   log.write(line)
-  sline = line.rstrip()
-  if(sline == "uci"):
+  command = line.rstrip()
+  if(command == "uci"):
     print("id name Flexo Alpha")
     print("id author Dennis Cahillane")
     print()
     print("uciok")
-  elif(sline == "isready"):
+  elif(command == "isready"):
     print("readyok")
-  elif(sline == "ucinewgame"):
+  elif(command == "ucinewgame"):
     pass
-  elif(sline == "stop"):
+  elif(command.startswith("go")):
+    pass
+  elif(command.startswith("position")):
+    pass
+  elif(command == "stop"):
     print("bestmove e2e4")
-  elif (sline in ["quit","exit"]):
+  elif (command in ["quit","exit"]):
     log.close()
     sys.exit(0)
   else:
-    sys.exit("unknown: " + sline)
+    sys.exit("unknown: " + command)
 
