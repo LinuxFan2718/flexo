@@ -5,11 +5,12 @@ import chess
 import random
 
 timestamp = str(int(time.time()))
-logfile = "flexo" + timestamp + ".log"
-log = open(logfile, "a", 0)
+logfile = "/tmp/flexo-" + timestamp + ".log"
+log = open(logfile, "x")
 
 for line in fileinput.input():
   log.write(line)
+  log.flush()
   command = line.rstrip()
   if(command == "uci"):
     print("id name Flexo Alpha")
