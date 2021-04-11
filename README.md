@@ -19,3 +19,13 @@ start engine by running flexo to send UCI commands on the terminal
 ./flexo
 ```
 or use a UCI program like `scid`. If using scid, make sure to set the "directory" as the directory that flexo is checked out in. To make the log file write, exit scid.
+
+## next step
+
+make this run in python without raising
+
+```python
+import chess
+import chess.engine
+engine = chess.engine.SimpleEngine.popen_uci("/home/dennis/flexo/flexo")
+```

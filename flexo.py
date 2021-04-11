@@ -22,22 +22,27 @@ for line in fileinput.input():
   elif(command == "ucinewgame"):
     pass
   elif(command.startswith("go")):
-    # extract the FEN from the command
-    # create a chess Board with that FEN, or startpos
+    # access the chess board and choose a random move
     board = chess.Board()
     legal_moves = list(board.legal_moves)
     random_move = random.choice(list(legal_moves))
     print(f"bestmove {random_move.uci()}")
     pass
   elif(command.startswith("position")):
+    # extract the FEN from the command
+    # create a chess Board with that FEN, or startpos
+    # store the chess board to be ready for when go is called
     pass
   elif(command == "stop"):
-    print("bestmove e2e4")
+    pass
+    # maybe call go function instead
   elif(command.startswith("setoption")):
     pass
   elif (command in ["quit","exit"]):
     log.close()
     sys.exit(0)
   else:
+    log.close()
+    print("unknown: " + command)
     sys.exit("unknown: " + command)
 
