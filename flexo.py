@@ -8,7 +8,7 @@ logfile = "/tmp/flexo-" + timestamp + ".log"
 log = open(logfile, "x")
 stdin_fileno = sys.stdin
 stdout_fileno = sys.stdout
- 
+
 for line in stdin_fileno:
   log.write(line)
   log.flush()
@@ -28,7 +28,6 @@ for line in stdin_fileno:
     legal_moves = list(board.legal_moves)
     random_move = random.choice(list(legal_moves))
     stdout_fileno.write(f"bestmove {random_move.uci()}" + '\n')
-    pass
   elif(command.startswith("position")):
     # extract the FEN from the command
     # create a chess Board with that FEN, or startpos
