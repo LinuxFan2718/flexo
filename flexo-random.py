@@ -14,7 +14,7 @@ for line in stdin_fileno:
   log.flush()
   command = line.rstrip()
   if(command == "uci"):
-    stdout_fileno.write("id name Flexo Alpha" + '\n')
+    stdout_fileno.write("id name Flexo Random" + '\n')
     stdout_fileno.write("id author Dennis Cahillane" + '\n')
     stdout_fileno.write('\n')
     stdout_fileno.write("uciok" + '\n')

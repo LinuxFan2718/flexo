@@ -1,0 +1,2 @@
+#!/bin/bash
+python /home/dennis/flexo/flexo-random.py -u
