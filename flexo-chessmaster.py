@@ -8,6 +8,9 @@ logfile = "/tmp/flexo-chessmaster-" + timestamp + ".log"
 log = open(logfile, "x")
 stdin_fileno = sys.stdin
 stdout_fileno = sys.stdout
+human_move_filename = "../chess-video/player-move.txt"
+chessmaster_move_filename = "../chess-video/chessmaster-move.txt"
+last_chessmaster_move = None
 
 for line in stdin_fileno:
   log.write(line)
@@ -23,19 +26,29 @@ for line in stdin_fileno:
   elif(command == "ucinewgame"):
     pass
   elif(command.startswith("go")):
-    legal_moves = list(board.legal_moves)
-    random_move = random.choice(list(legal_moves))
-    stdout_fileno.write(f"bestmove {random_move.uci()}" + '\n')
+    # spin until chessmaster makes a move
+    chessmaster_move = None
+    while(chessmaster_move == last_chessmaster_move):
+      chessmaster_move_file = open(chessmaster_move_filename, 'r')
+      chessmaster_move = chessmaster_move_file.read()
+      chessmaster_move_file.close()
+      time.sleep(0.1)
+    last_chessmaster_move = chessmaster_move
+    #
+    # once move is made, extract it and send it to lichess
+    stdout_fileno.write(f"bestmove {chessmaster_move}" + '\n')
   elif(command.startswith("position")):
     # position startpos
     # position startpos moves g1f3 e7e5 b1a3 d7d5 b2b3 d8h4 h2h3 e5e4 e2e3 e4f3
-    board = chess.Board()
+    #
+    # extract last move from list, it is the human player move from lichess
     tokens = command.split(' ')
-    if len(tokens) > 2:
-      uci_moves = tokens[3:]
-      for uci_move in uci_moves:
-        move = chess.Move.from_uci(uci_move)
-        board.push(move)
+    human_move = tokens[-1]
+    # write this move to the text file
+    human_move_file = open(human_move_filename, "w")
+    human_move_file.write(human_move)
+    human_move_file.flush()
+    human_move_file.close()
   elif(command == "stop"):
     pass
     # maybe call go function instead
