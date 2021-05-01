@@ -10,7 +10,8 @@ stdin_fileno = sys.stdin
 stdout_fileno = sys.stdout
 human_move_filename = "../chess-video/player-move.txt"
 chessmaster_move_filename = "../chess-video/chessmaster-move.txt"
-last_chessmaster_move = None
+last_chessmaster_move = ""
+chessmaster_move = ""
 
 for line in stdin_fileno:
   log.write(line)
@@ -27,7 +28,6 @@ for line in stdin_fileno:
     pass
   elif(command.startswith("go")):
     # spin until chessmaster makes a move
-    chessmaster_move = None
     while(chessmaster_move == last_chessmaster_move):
       chessmaster_move_file = open(chessmaster_move_filename, 'r')
       chessmaster_move = chessmaster_move_file.read()
