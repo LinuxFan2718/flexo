@@ -28,7 +28,7 @@ for line in stdin_fileno:
     pass
   elif(command.startswith("go")):
     # spin until chessmaster makes a move
-    while(chessmaster_move == last_chessmaster_move):
+    while(chessmaster_move in [last_chessmaster_move, '', None]):
       chessmaster_move_file = open(chessmaster_move_filename, 'r')
       chessmaster_move = chessmaster_move_file.read()
       chessmaster_move_file.close()
