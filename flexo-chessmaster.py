@@ -13,6 +13,12 @@ chessmaster_move_filename = "../chess-video/chessmaster-move.txt"
 last_chessmaster_move = ""
 chessmaster_move = ""
 
+def write_human_move(human_move):
+  human_move_file = open(human_move_filename, "w")
+  human_move_file.write(human_move)
+  human_move_file.flush()
+  human_move_file.close()
+
 for line in stdin_fileno:
   log.write(line)
   log.flush()
@@ -38,17 +44,23 @@ for line in stdin_fileno:
     # once move is made, extract it and send it to lichess
     stdout_fileno.write(f"bestmove {chessmaster_move}" + '\n')
   elif(command.startswith("position")):
-    # position startpos
-    # position startpos moves g1f3 e7e5 b1a3 d7d5 b2b3 d8h4 h2h3 e5e4 e2e3 e4f3
-    #
-    # extract last move from list, it is the human player move from lichess
     tokens = command.split(' ')
-    human_move = tokens[-1]
-    # write this move to the text file
-    human_move_file = open(human_move_filename, "w")
-    human_move_file.write(human_move)
-    human_move_file.flush()
-    human_move_file.close()
+    # game just started
+    if len(tokens) == 2: # position startpos
+      # chessmaster plays the white pieces
+      # opponent chose the black pieces
+      human_move = "newgamewhite"
+    elif len(tokens) == 4: # position startpos moves d2d4
+      # opponent chose the white pieces
+      # chessmaster plays the black pieces
+      human_move = "newgameblack " + tokens[-1]
+      # send message to start new game and first move
+    else:
+      # game is underway
+      # position startpos moves g1f3 e7e5 b1a3 d7d5 b2b3 d8h4 h2h3 e5e4 e2e3 e4f3
+      # extract last move from list, it is the human player move from lichess
+      human_move = tokens[-1]
+    write_human_move(human_move)
   elif(command == "stop"):
     pass
     # maybe call go function instead
